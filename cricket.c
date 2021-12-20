@@ -10,10 +10,10 @@ struct player
     int ODI, T20;
 };
 struct player p[5];
-int player_count = 0;
+int player_count=0;
 void getdata(int pos[])
 {
-    char ch1;
+    player_count char ch1;
     int i=0;
     do
     {
@@ -151,7 +151,7 @@ void putdata()
 
 int main()
 {
-    int pos[player_count];
+     int pos[player_count];
     getdata(pos);
     int r=1;
      while (r)
