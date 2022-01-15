@@ -1,92 +1,96 @@
 #include <stdio.h>
-#include <stdlib.h>
-struct Node *f = NULL;
-struct Node *r = NULL;
-struct Node
-{
-    int data;
-    struct Node *next;
-};
-void display(struct Node *ptr)
-{
-    printf("Elements in the queue \n");
-    while (ptr != NULL)
-    {
-        printf("%d ", ptr->data);
-        ptr = ptr->next;
-    }
-}
-void enqueue()
-{
-    int val;
-    printf("Enter the value \n");
-    scanf("%d", &val);
-    struct Node *n = (struct Node *)malloc(sizeof(struct Node));
-    if (n == NULL)
-    {
-        printf("The queue is full");
-    }
-    else
-    {
-        n->data = val;
-        n->next = NULL;
-        if (f == NULL)
-        {
-            f = r = n;
-        }
-        else
-        {
-            r->next = n;
-            r = n;
-        }
-    }
-}
-int dequeue()
-{
-    int val;
-    struct Node *ptr = f;
-    if (f == NULL)
-    {
-        printf("The queue is Empty");
-    }
-    else
-    {
-        f = f->next;
-        val = ptr->data;
-        free(ptr);
-    }
-    return val;
-}
+
+#define max 10
+int queue[max];
+int front = -1;
+int rear = -1;
+
+void enqueue(int);
+void dequeue();
+void display_queue();
+
 int main()
 {
-    // display(f);
-    // enqueue(4);
-    // enqueue(10);
-    // enqueue(6);
-    // display(f);
-    // printf("Dequeuing the element from queue %d \n", dequeue());
-    while (1)
+    int choice = 1, x;
+    while (choice < 4 && choice != 0)
     {
-        int choice = 0;
-        printf("1. Enqueue\n2. Dequeue\n3. Display\n4. Exit\n");
+        printf("\n  1: Insert ");
+        printf("\n  2: Delete  ");
+        printf("\n  3: Display ");
+        printf("\nEnter your choice");
         scanf("%d", &choice);
+
         switch (choice)
         {
+
         case 1:
-            enqueue();
+
+            printf("Enter the element which is to be inserted");
+            scanf("%d", &x);
+            enqueue(x);
             break;
         case 2:
-            printf("%d is removed from the queue \n", dequeue());
+            dequeue();
             break;
         case 3:
-            display(f);
-            break;
-        case 4:
-            return 0;
-            break;
-        default:
-            printf("Invalid choice");
+            display_queue();
         }
     }
     return 0;
+}
+
+void enqueue(int element)
+{
+    if (front == -1 && rear == -1)
+    {
+        front = 0;
+        rear = 0;
+        queue[rear] = element;
+    }
+    else if ((rear + 1) % max == front)
+    {
+        printf("Queue is overflow..");
+    }
+    else
+    {
+        rear = (rear + 1) % max;
+        queue[rear] = element;
+    }
+}
+
+void dequeue()
+{
+    if ((front == -1) && (rear == -1))
+    {
+        printf("\nQueue is underflow..");
+    }
+    else if (front == rear)
+    {
+        printf("\nThe dequeued element is %d", queue[front]);
+        front = -1;
+        rear = -1;
+    }
+    else
+    {
+        printf("\nThe dequeued element is %d", queue[front]);
+        front = (front + 1) % max;
+    }
+}
+
+void display_queue()
+{
+    int i = front;
+    if (front == -1 && rear == -1)
+    {
+        printf("\n Queue is empty..");
+    }
+    else
+    {
+        printf("\nElements in a Queue are :");
+        while (i <= rear)
+        {
+            printf("%d,", queue[i]);
+            i = (i + 1) % max;
+        }
+    }
 }
